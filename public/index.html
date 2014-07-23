@@ -20,6 +20,7 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="/client/main.js"></script>
 	<script src="/client/clock.js"></script>
+	<script src="/client/timer.js"></script>
 	<script>
 		$(function() {
 			var client_timer = new ClientController(document.getElementById('time'));
@@ -31,33 +32,13 @@
 				client_timer.display(data);
 			});
 
-			socket.on('new timer', function(time){
-				seconds = time;
-			});
-
 			$('#change-time').submit(function(event) {
-				socket.emit('new timer', $('#change-time-value').val());
+				socket.emit('timer', {
+					total: $('#change-time-value').val(),
+					elapsed: 0
+				});
 				event.preventDefault();
 			});
-		});
-//
-//		var seconds = 0;
-//
-//		function decreaseTimer() {
-//			seconds -= 1;
-//			setTimeout(decreaseTimer, 1000);
-//		}
-//		setTimeout(decreaseTimer, 1000);
-//
-//		function showTime() {
-//			document.getElementById('time').innerText = seconds;
-//
-//			setTimeout(showTime, 100);
-//		}
-//
-//		$(showTime);
-		$(function() {
-
 		});
 
 	</script>

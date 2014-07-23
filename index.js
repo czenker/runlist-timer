@@ -13,6 +13,7 @@ app.get('/', function(req, res){
 
 app.get('/client/main.js', function(req, res){res.sendfile('lib/client/main.js')});
 app.get('/client/clock.js', function(req, res){res.sendfile('lib/client/views/clock.js')});
+app.get('/client/timer.js', function(req, res){res.sendfile('lib/client/views/timer.js')});
 
 io.on('connection', function(socket){
 	// a user connected - let him know what he is supposed to show
@@ -21,10 +22,9 @@ io.on('connection', function(socket){
 
 	// event: new timer should be displayed
 	socket.on('timer', function(data) {
-		console.log('set timer to ' + data);
 		server_timer.displayTimer(data);
-		io.emit('new timer', data);
-	})
+		socket.emit('display', server_timer.getData());
+	});
 });
 
 http.listen(port, function(){
