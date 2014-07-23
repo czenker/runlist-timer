@@ -39,7 +39,7 @@
 				event.preventDefault();
 			});
 			$('#show-clock').click(function(event) {
-				socket.emit('clock');
+				socket.emit('clock', {startTimestamp: (new Date).getTime()});
 				event.preventDefault();
 			});
 		});
