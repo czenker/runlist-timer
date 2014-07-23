@@ -23,7 +23,7 @@
 	<script src="/client/timer.js"></script>
 	<script>
 		$(function() {
-			var client_timer = new ClientController(document.getElementById('time'));
+			var client_timer = new ClientController($('#time'));
 			var socket = io();
 
 			// there is something new to display
@@ -34,9 +34,12 @@
 
 			$('#change-time').submit(function(event) {
 				socket.emit('timer', {
-					total: $('#change-time-value').val(),
-					elapsed: 0
+					totalMs: parseInt($('#change-time-value').val(), 10) * 1000
 				});
+				event.preventDefault();
+			});
+			$('#show-clock').click(function(event) {
+				socket.emit('clock');
 				event.preventDefault();
 			});
 		});
@@ -44,10 +47,11 @@
 	</script>
 </head>
 <body>
-	<div id="time" contenteditable="true">text goes here</div>
+	<div id="time">text goes here</div>
 	<form id="change-time">
 		<input type="text" id="change-time-value" value="120" />
 		<button type="submit">OK</button>
+		<button id="show-clock">Clock</button>
 	</form>
 </body>
 </html>

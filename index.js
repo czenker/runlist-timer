@@ -23,7 +23,13 @@ io.on('connection', function(socket){
 	// event: new timer should be displayed
 	socket.on('timer', function(data) {
 		server_timer.displayTimer(data);
-		socket.emit('display', server_timer.getData());
+		io.emit('display', server_timer.getData());
+	});
+
+	// event: clock should be displayed
+	socket.on('clock', function(data) {
+		server_timer.displayClock(data);
+		io.emit('display', server_timer.getData());
 	});
 });
 
