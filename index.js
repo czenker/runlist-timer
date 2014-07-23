@@ -1,25 +1,28 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var timer = require('./lib/timer.js');
+var ServerTimer = require('./lib/server/main.js');
 
-var Timer = timer();
+var server_timer = ServerTimer();
 
 var port = 3000;
 
 app.get('/', function(req, res){
 	res.sendfile('public/index.html');
 });
-app.get('/client_timer.js', function(req, res){
-	res.sendfile('public/client_timer.js');
-});
+
+app.get('/client/main.js', function(req, res){res.sendfile('lib/client/main.js')});
+app.get('/client/clock.js', function(req, res){res.sendfile('lib/client/views/clock.js')});
 
 io.on('connection', function(socket){
+	// a user connected - let him know what he is supposed to show
 	console.log('a user connected');
-	socket.emit('display', Timer.displayData());
+	socket.emit('display', server_timer.getData());
 
-	socket.on('new timer', function(data) {
+	// event: new timer should be displayed
+	socket.on('timer', function(data) {
 		console.log('set timer to ' + data);
+		server_timer.displayTimer(data);
 		io.emit('new timer', data);
 	})
 });

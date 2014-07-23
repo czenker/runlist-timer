@@ -18,10 +18,11 @@
 	</style>
 	<script src="//code.jquery.com/jquery-1.11.1.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
-	<script src="/client_timer.js"></script>
+	<script src="/client/main.js"></script>
+	<script src="/client/clock.js"></script>
 	<script>
 		$(function() {
-			var client_timer = new ClientTimer(document.getElementById('time'));
+			var client_timer = new ClientController(document.getElementById('time'));
 			var socket = io();
 
 			// there is something new to display
