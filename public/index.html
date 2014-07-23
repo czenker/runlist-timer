@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Timer</title>
+	<style>
+		body {
+			background: black;
+			text-align: center;
+			color: #fff;
+			font-family: sans-serif;
+		}
+
+		#time {
+			color:#fff;
+			font-size: 4em;
+			font-weight: bold;
+		}
+	</style>
+	<script src="//code.jquery.com/jquery-1.11.1.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/client_timer.js"></script>
+	<script>
+		$(function() {
+			var client_timer = new ClientTimer(document.getElementById('time'));
+			var socket = io();
+
+			// there is something new to display
+			socket.on('display', function(data) {
+				console.log(data);
+				client_timer.display(data);
+			});
+
+			socket.on('new timer', function(time){
+				seconds = time;
+			});
+
+			$('#change-time').submit(function(event) {
+				socket.emit('new timer', $('#change-time-value').val());
+				event.preventDefault();
+			});
+		});
+//
+//		var seconds = 0;
+//
+//		function decreaseTimer() {
+//			seconds -= 1;
+//			setTimeout(decreaseTimer, 1000);
+//		}
+//		setTimeout(decreaseTimer, 1000);
+//
+//		function showTime() {
+//			document.getElementById('time').innerText = seconds;
+//
+//			setTimeout(showTime, 100);
+//		}
+//
+//		$(showTime);
+		$(function() {
+
+		});
+
+	</script>
+</head>
+<body>
+	<div id="time" contenteditable="true">text goes here</div>
+	<form id="change-time">
+		<input type="text" id="change-time-value" value="120" />
+		<button type="submit">OK</button>
+	</form>
+</body>
+</html>
